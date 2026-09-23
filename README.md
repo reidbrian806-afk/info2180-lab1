@@ -1,6 +1,6 @@
 # INFO2180 Lab 1
 
-This is Lab 1 for <Brian Reid>
+This is Lab 1 for Brian Reid
 
 ## Branching
 Branching allows you to isolate development work without affecting other branches in the
