@@ -10,6 +10,14 @@ document.addEventListener('DOMContentLoaded', function () {
   var currentPlayer = 'X';
   var gameActive = true;
 
+  var statusDiv = document.getElementById('status');
+
+  var winningCombinations = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+  ];
+
   function handleSquareClick(event) {
     var square = event.currentTarget;
     var index = parseInt(square.getAttribute('data-index'), 10);
@@ -18,7 +26,11 @@ document.addEventListener('DOMContentLoaded', function () {
     square.textContent = currentPlayer;
     square.classList.add(currentPlayer);
 
-    currentPlayer = (currentPlayer === 'X') ? 'O' : 'X';
+    checkForWinner();
+
+    if (gameActive) {
+      currentPlayer = (currentPlayer === 'X') ? 'O' : 'X';
+    }
   }
 
   function handleMouseOver(event) {
@@ -32,6 +44,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function handleMouseOut(event) {
     event.currentTarget.classList.remove('hover');
+  }
+
+  function checkForWinner() {
+    var roundWon = false;
+    var winner = '';
+
+    for (var i = 0; i < winningCombinations.length; i++) {
+      var a = winningCombinations[i][0];
+      var b = winningCombinations[i][1];
+      var c = winningCombinations[i][2];
+
+      if (gameState[a] === '') continue;
+
+      if (gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
+        roundWon = true;
+        winner = gameState[a];
+        break;
+      }
+    }
+
+    if (roundWon) {
+      statusDiv.textContent = 'Congratulations! ' + winner + ' is the Winner!';
+      statusDiv.classList.add('you-won');
+      gameActive = false;
+      return;
+    }
+
+    if (gameState.indexOf('') === -1) {
+      statusDiv.textContent = 'Game ended in a draw!';
+      gameActive = false;
+    }
   }
 
   boardDivs.forEach(function (div, index) {
