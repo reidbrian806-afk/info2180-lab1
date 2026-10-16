@@ -77,11 +77,27 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  function resetGame() {
+    gameState = ['', '', '', '', '', '', '', '', ''];
+    currentPlayer = 'X';
+    gameActive = true;
+
+    boardDivs.forEach(function (div) {
+      div.textContent = '';
+      div.classList.remove('X', 'O', 'hover');
+    });
+
+    statusDiv.textContent = 'Move your mouse over a square and click to play an X or an O.';
+    statusDiv.classList.remove('you-won');
+  }
+
   boardDivs.forEach(function (div, index) {
     div.setAttribute('data-index', index);
     div.addEventListener('click', handleSquareClick);
     div.addEventListener('mouseover', handleMouseOver);
     div.addEventListener('mouseout', handleMouseOut);
   });
+
+  document.querySelector('.btn').addEventListener('click', resetGame);
 
 });
